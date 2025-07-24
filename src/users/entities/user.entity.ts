@@ -22,7 +22,7 @@ export class User {
     @Column({type: 'varchar', nullable: true})
     image: string
 
-    @Column({ type: 'varchar', length: 10, nullable: false })
+    @Column({ type: 'varchar', nullable: false})
     phone: string;
 
     @Column({

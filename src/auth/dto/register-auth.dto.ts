@@ -4,7 +4,8 @@ import {
   IsEmail,
   MinLength,
   IsPhoneNumber,
-  IsIn
+  IsIn,
+  MaxLength
 } from 'class-validator';
 
 export class RegisterAuthDto {
