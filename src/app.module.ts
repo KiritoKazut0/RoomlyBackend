@@ -9,6 +9,7 @@ import { PaymentModule } from './payment/payment.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import {ConfigModule} from "@nestjs/config"
 import {TypeOrmModule} from "@nestjs/typeorm"
+import { LocationModule } from './location/location.module';
 
 @Module({
   imports: [
@@ -24,14 +25,16 @@ import {TypeOrmModule} from "@nestjs/typeorm"
       database: process.env.NAME_DATABASE,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
-      port: parseInt(process.env.PORT_DATABASE ||'5432') 
+      port: parseInt(process.env.PORT_DATABASE ||'5432'), 
+      // logging: "all"
     }),
     AuthModule,
     UsersModule,
     RoomsModule,
     ImagesModule,
     PaymentModule,
-    ReviewsModule],
+    ReviewsModule,
+    LocationModule],
   controllers: [AppController],
   providers: [AppService],
 })

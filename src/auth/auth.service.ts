@@ -1,25 +1,23 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { LoginAuthDto} from './dto/login-auth.dto';
 import { RegisterAuthDto } from './dto/register-auth.dto';
-import { User } from 'src/users/entities/user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { hash, compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { plainToInstance } from 'class-transformer';
 import { ResponseAuthDto } from './dto/response-auth.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
 
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    private readonly userService: UsersService,
     private jwtService: JwtService
   ){}
 
   async access(acessAuthDto: LoginAuthDto): Promise<{data: ResponseAuthDto, token: string}>  {
     const {email, password} = acessAuthDto
-    const user = await this.findByEmail(email)
+    const user = await this.userService.findByEmail(email)
 
     if(!user){
         throw new HttpException('User Not found', HttpStatus.NOT_FOUND);
@@ -45,7 +43,7 @@ export class AuthService {
 
   async register(registerAuthDto: RegisterAuthDto) {
     try {
-      const userExist = await  this.findByEmail(registerAuthDto.email)
+      const userExist = await  this.userService.findByEmail(registerAuthDto.email)
 
       if(userExist){
         throw new HttpException('User already exists', HttpStatus.CONFLICT);
@@ -55,7 +53,7 @@ export class AuthService {
       const passwordToHash = await hash(password, 10)
 
       const userToCreate = {...userData, password: passwordToHash}
-      const newUser = await this.userRepository.save(userToCreate)
+      const newUser = await this.userService.create(userToCreate)
 
       const token = this.jwtService.sign({name: newUser.name})
 
@@ -73,11 +71,6 @@ export class AuthService {
       throw new HttpException('Error creating user', HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
-  }
-
-
- private async findByEmail(email: string): Promise<User | null> {
-      return await this.userRepository.findOneBy({email})
   }
 
 
