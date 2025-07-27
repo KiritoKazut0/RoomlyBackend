@@ -1,34 +1,42 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller,Post, Param, ParseUUIDPipe, Req, Res, Headers, HttpStatus, HttpException } from '@nestjs/common';
 import { PaymentService } from './payment.service';
-import { CreatePaymentDto } from './dto/create-payment.dto';
-import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { Request, Response } from 'express';
 
 @Controller('payment')
 export class PaymentController {
+
   constructor(private readonly paymentService: PaymentService) {}
 
-  @Post()
-  create(@Body() createPaymentDto: CreatePaymentDto) {
-    return this.paymentService.create(createPaymentDto);
+  @Post ('create-checkout-session/:idUser')
+  createCheckouSession(@Param('idUser', ParseUUIDPipe) idUser: string){
+    return this.paymentService.createSession(idUser)
   }
 
-  @Get()
-  findAll() {
-    return this.paymentService.findAll();
+  @Post('cancel-suscription/:idUser')
+  cancelSuscription(@Param('idUser', ParseUUIDPipe) idUser: string){
+    return this.paymentService.cancelSuscription(idUser)
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.paymentService.findOne(+id);
+  @Post('webhook')
+  async handleStripeWebhook(
+    @Req() request: Request,
+    @Res() response: Response,
+    @Headers('stripe-signature') signature: string
+  ) {
+    try {
+       const rawBody = request.body
+      await this.paymentService.webhookPayment(rawBody, signature);
+      response.status(HttpStatus.OK).send('Webhook handled');
+    } catch (err) {
+
+        if(err instanceof HttpException){
+          throw err
+        }
+
+         response.status(HttpStatus.INTERNAL_SERVER_ERROR)
+
+    }
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePaymentDto: UpdatePaymentDto) {
-    return this.paymentService.update(+id, updatePaymentDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.paymentService.remove(+id);
-  }
+  
 }

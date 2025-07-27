@@ -6,22 +6,30 @@ import {
   IsPhoneNumber,
   IsIn,
   ValidateIf,
-  IsUrl
+  IsUrl,
+  Matches
 } from 'class-validator';
 
 export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(4)
+  @Matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/, {
+    message: 'Name must not contain numbers or special characters',
+  })
   name: string;
 
   @IsNotEmpty()
   @IsString()
   @MinLength(4)
+  @Matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/, {
+    message: 'Name must not contain numbers or special characters',
+  })
   lastName: string;
 
   @IsNotEmpty()
   @IsPhoneNumber('MX')
+  @Matches(/^\d+$/, { message: 'Phone must not contain letters or symbols' })
   phone: string;
 
   @IsNotEmpty()
