@@ -13,6 +13,6 @@ import { UsersModule } from 'src/users/users.module';
     UsersModule
   ],
   controllers: [RoomsController],
-  providers: [RoomsService],
+  providers: [RoomsService]
 })
 export class RoomsModule { }
