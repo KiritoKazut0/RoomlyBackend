@@ -12,23 +12,19 @@ export class ReviewsController {
     return this.reviewsService.create(createReviewDto);
   }
 
-  @Get()
-  findAll() {
-    return this.reviewsService.findAll();
+   @Get(':id')
+  findAll(@Param('id') id: string) {
+    return this.reviewsService.findAll(id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reviewsService.findOne(+id);
-  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
-    return this.reviewsService.update(+id, updateReviewDto);
+    return this.reviewsService.update(id, updateReviewDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.reviewsService.remove(+id);
+    return this.reviewsService.remove(id);
   }
 }
