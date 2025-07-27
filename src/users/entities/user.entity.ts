@@ -1,11 +1,11 @@
 import { Room } from "src/rooms/entities/room.entity";
 import { Review } from "src/reviews/entities/review.entity";
-import { 
-    Entity, 
-    Column, 
-    PrimaryGeneratedColumn, 
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
     OneToMany,
-    CreateDateColumn 
+    CreateDateColumn
 } from "typeorm";
 
 @Entity('users')
@@ -19,10 +19,10 @@ export class User {
     @Column({ type: 'varchar', length: 50, nullable: false })
     lastName: string;
 
-    @Column({type: 'varchar', nullable: true})
+    @Column({ type: 'varchar', nullable: true })
     image: string
 
-    @Column({ type: 'varchar', nullable: false})
+    @Column({ type: 'varchar', nullable: false })
     phone: string;
 
     @Column({
@@ -36,6 +36,20 @@ export class User {
 
     @Column({ type: 'varchar', nullable: false })
     password: string;
+
+    // datos del metodo de pago 
+    @Column({
+        type: 'enum',
+        enum: ["Basico", "Premium"],
+        default: "Basico"
+    })
+    tipo_suscription: "Basico" | "Premium"
+
+    @Column({
+        type: 'varchar',
+        nullable: true
+    })
+    id_suscription: string
 
     @CreateDateColumn({ type: 'timestamp' })
     date: Date;

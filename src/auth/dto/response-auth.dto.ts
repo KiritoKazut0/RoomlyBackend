@@ -28,6 +28,10 @@ export class ResponseAuthDto {
     @Expose()
     token: string
 
+    @Expose()
+    tipo_suscription:  "Basico" | "Premium"
+
+
     constructor(partial: Partial<ResponseAuthDto>){
         Object.assign(this, partial)
     }

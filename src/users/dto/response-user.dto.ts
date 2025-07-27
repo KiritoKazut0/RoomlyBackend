@@ -26,6 +26,12 @@ export class UserResponse {
         @Exclude()
         password:string
 
+        @Expose()
+        tipo_suscription: "Basico" | "Premium"
+
+        @Expose()
+        id_suscription: string | null
+
     
         constructor(partial: Partial<UserResponse>){
             Object.assign(this, partial)

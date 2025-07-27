@@ -16,7 +16,5 @@ export class AuthController {
   access(@Body() authDto: LoginAuthDto){
     return this.authService.access(authDto)
   }
-
-
   
 }
