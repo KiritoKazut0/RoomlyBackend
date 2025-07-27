@@ -23,6 +23,9 @@ export class ResponseAuthDto {
     password:string
 
     @Expose()
+    image: string
+
+    @Expose()
     token: string
 
     constructor(partial: Partial<ResponseAuthDto>){

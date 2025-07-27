@@ -1,4 +1,4 @@
-import { Zone } from "src/zones/zone.entity";
+import { Zone } from "src/location/entities/zone.entity";
 import { User } from "src/users/entities/user.entity";
 import { Review } from "src/reviews/entities/review.entity";
 import {
@@ -10,7 +10,7 @@ import {
     JoinColumn
 } from "typeorm";
 
-export enum RoomService {
+ enum RoomService {
     BATHROOM = 'Baño',
     WIFI = 'Wifi',
     FURNISHED = 'Amueblado',
@@ -38,10 +38,10 @@ export class Room {
 
     @Column({
         type: 'enum',
-        enum: ['Ocupado', 'Disponible'],
-        default: 'Disponible'
+        enum: ['Ocupado', 'Disponible', 'En revision'],
+        default: 'En revision'
     })
-    status: 'Ocupado' | 'Disponible';
+    status: 'Ocupado' | 'Disponible' | 'En revision';
 
     @Column({
         type: 'numeric',
@@ -52,11 +52,12 @@ export class Room {
     price_monthly: number;
 
     @Column({
-        type: "varchar",
+        type: "text",
+        array: true,
         nullable: false,
         default: []
     })
-    images: [string]
+    images: string[]
 
     @Column({ type: 'numeric', nullable: true })
     calificacion_promedio: number;
@@ -86,6 +87,6 @@ export class Room {
     @Column({ type: 'integer', nullable: false })
     location_number: number;
 
-    @Column({ type: 'integer', nullable: false })
-    location_postal_code: number;
+    @Column({ type: 'varchar', nullable: false })
+    location_postal_code: string;
 }
