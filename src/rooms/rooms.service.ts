@@ -157,9 +157,45 @@ export class RoomsService {
     }
   }
 
-  async findPopular() {
+async findPopular(): Promise<ResponseRoomsDto[]> {
+  try {
+    const rooms = await this.roomRepository.find({
+      relations: ['owner', 'zone', 'zone.city', 'zone.city.state']
+    });
 
+    const premiumRooms = rooms.filter(room => room.owner.tipo_suscription === 'Premium');
+
+    const response: ResponseRoomsDto[] = premiumRooms.map((room) => {
+      return {
+        id: room.id,
+        estado: room.zone.city.state.name,
+        descripcion: room.description,
+        photo_album: room.images,
+        cp: room.location_postal_code,
+        status: room.status,
+        precio_mensual: room.price_monthly,
+        servicios: room.services,
+        otros_servicios: room.other_services,
+        calle: room.location_street,
+        numero_casa: room.location_number,
+        colonia: room.zone.name,
+        ciudad: room.zone.city.name
+      };
+    });
+
+    return response;
+  } catch (error) {
+    if (error instanceof HttpException) {
+      throw error;
+    }
+
+    throw new HttpException(
+      'Failed to search rooms',
+      HttpStatus.INTERNAL_SERVER_ERROR
+    );
   }
+}
+
 
 
   async findOne(id: string): Promise<ResponseRoomsDto> {
