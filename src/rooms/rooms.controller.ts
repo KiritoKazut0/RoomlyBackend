@@ -17,6 +17,12 @@ export class RoomsController {
     return this.roomsService.findAll();
   }
 
+   @Get('/populars')
+  findPopulars() {
+    return this.roomsService.findPopular();
+  }
+
+
   @Get('user/:id')
   findByUser(@Param('id') id: string){
     return this.roomsService.findByUser(id)
@@ -26,6 +32,8 @@ export class RoomsController {
   findOne(@Param('id') id: string) {
     return this.roomsService.findOne(id);
   }
+
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {

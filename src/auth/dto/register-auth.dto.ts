@@ -5,7 +5,6 @@ import {
   MinLength,
   IsPhoneNumber,
   IsIn,
-  MaxLength,
   Matches
 } from 'class-validator';
 

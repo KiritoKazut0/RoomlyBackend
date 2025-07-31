@@ -64,8 +64,8 @@ export class PaymentService {
             quantity: 1
           }
         ],
-        success_url: `${this.url_webhook}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${this.url_webhook}/payment/cancel`,
+        success_url: `${this.url_webhook}/payment/success`,
+        cancel_url: `${this.url_webhook}/plans`,
         metadata: {
           id_user
         }

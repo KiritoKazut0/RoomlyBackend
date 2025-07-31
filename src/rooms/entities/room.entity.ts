@@ -59,7 +59,7 @@ export class Room {
     })
     images: string[]
 
-    @Column({ type: 'numeric', nullable: true })
+    @Column({ type: 'numeric', nullable: true, default: 0 })
     calificacion_promedio: number;
 
     @Column({
